@@ -9,7 +9,6 @@ from selenium.webdriver.firefox.options import Options as FFOptions
 
 
 def pytest_addoption(parser):
-    """Хук добавления кастомных параметров запуска"""
     parser.addoption('--browser', default="Chrome", help="Which browser to open")
     parser.addoption("--app_url", default='192.168.0.100:8081', help='App base url')
     parser.addoption("--ya_driver", default='/Users/darinastarshinova/yandexdriver',
@@ -49,7 +48,6 @@ def get_user_reg_url(request):
 
 @pytest.fixture()
 def browser(request):
-    """Фикстура получения драйвера"""
     driver = None
     driver_storage = request.config.getoption('--ya_driver')
     browser_type = request.config.getoption('--browser')
@@ -64,9 +62,6 @@ def browser(request):
         options = ChromiumOptions()
         if headless:
             options.add_argument("headless=new")
-        # закомментил binary_location, т.к. была ошибка запуска сессии, драйвер сам находит
-        # и открывает Яндекс Браузер:
-        # options.binary_location = '/Applications/Yandex.app'
         driver = webdriver.Chrome(
             options=options,
             service=ChromiumService(executable_path=f'{driver_storage}/yandexdriver')

@@ -20,8 +20,8 @@ class TestLoginLogoutAdministration:
         browser.get(get_auth_admin_url)
         wait = WebDriverWait(browser, 5, poll_frequency=1)
         # Заполняем поля
-        fill_the_field(browser, "username", os.getenv("OPENCART_USERNAME"), 'NAME')
-        fill_the_field(browser, "password", os.getenv("OPENCART_PASSWORD"), 'NAME')
+        fill_the_field(browser, "#input-username", os.getenv("OPENCART_USERNAME"), 'CSS_SELECTOR')
+        fill_the_field(browser, "#input-password", os.getenv("OPENCART_PASSWORD"), 'CSS_SELECTOR')
         # Нажимаем кнопку Login
         click_elem(browser, "//button[@class='btn btn-primary']", 'XPATH')
         # Получаем элемент с именем юзера в хэдере
@@ -37,10 +37,8 @@ class TestLoginLogoutAdministration:
         wait = WebDriverWait(browser, 5, poll_frequency=1)
 
         # Логинимся
-        # Заполняем поля
-        fill_the_field(browser, "username", os.getenv("OPENCART_USERNAME"), 'NAME')
-        fill_the_field(browser, "password", os.getenv("OPENCART_PASSWORD"), 'NAME')
-        # Нажимаем кнопку Login
+        fill_the_field(browser, "#input-username", os.getenv("OPENCART_USERNAME"), 'CSS_SELECTOR')
+        fill_the_field(browser, "#input-password", os.getenv("OPENCART_PASSWORD"), 'CSS_SELECTOR')
         click_elem(browser, "//button[@class='btn btn-primary']", 'XPATH')
 
         # Нажимаем кнопку Logout
