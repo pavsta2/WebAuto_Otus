@@ -1,4 +1,5 @@
 """Модуль методов взаимодействия с элементами главной страницы и ее локаторов"""
+import allure
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 
@@ -13,6 +14,8 @@ class MainPage(BasePage):
     SEARCH_BTN = By.XPATH, "//button[@class='btn btn-light btn-lg']"
     PROD_NAME_IN_CARD = By.XPATH, "//h4"
 
+    @allure.step("Поиск на странице продукта с названием {prod_name}")
     def search_for_product(self, prod_name: str):
+        self.logger.info('%s: Searching for product: %s' % (self.class_name, prod_name))
         self.fill_the_field(self.SEARCH_FIELD, prod_name)
         self.click_elem(self.SEARCH_BTN)

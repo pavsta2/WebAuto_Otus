@@ -1,5 +1,6 @@
 """Модуль методов взаимодействия с элементами страницы авторизации в админку и ее локаторов"""
 import os
+import allure
 from selenium.webdriver.common.by import By
 from dotenv import load_dotenv
 from pages.base_page import BasePage
@@ -17,7 +18,9 @@ class AdmLoginPage(BasePage):
     USERNAME_IN_HEADER = By.XPATH, "//span[@class='d-none d-md-inline d-lg-inline']"
     LOGOUT_BTN = By.XPATH, "//a[@class='nav-link']"
 
+    @allure.step("Авторизация в админку")
     def login(self):
+        self.logger.info('%s: Login administration page' % self.class_name)
         self.fill_the_field(self.USERNAME_FLD, os.getenv("OPENCART_USERNAME"))
         self.fill_the_field(self.PASS_FLD, os.getenv("OPENCART_PASSWORD"))
         # Нажимаем кнопку Login
