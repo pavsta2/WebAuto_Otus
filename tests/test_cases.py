@@ -1,5 +1,7 @@
 """Проверка четырех сценариев"""
 import random
+
+import allure
 import pytest
 from selenium.common.exceptions import TimeoutException
 from dotenv import load_dotenv
@@ -14,98 +16,87 @@ from pages.usr_reg_page import UserRegPage
 load_dotenv()
 
 
+@allure.feature("Проверки админки")
 class TestLoginLogoutAdministration:
     """Тестирование логина/разлогина в админке - сценарий 3.1."""
 
+    @allure.title("Проверка логина")
     def test_login(self, browser, get_auth_admin_url):
         """Проверка логина"""
-        browser.get(get_auth_admin_url)
-        # логинимся
+        AdmLoginPage(browser).open(get_auth_admin_url)
         AdmLoginPage(browser).login()
-        # Получаем элемент с именем юзера в хэдере
         el = AdmLoginPage(browser).get_element(AdmLoginPage.USERNAME_IN_HEADER)
-        # Проверяем имя юзера
         assert el.text.strip(' ') == 'John Doe', 'Логин не завершился успехом'
 
+    @allure.title("Проверка разлогина")
     def test_logout(self, browser, get_auth_admin_url):
         """Проверка разлогина"""
-        browser.get(get_auth_admin_url)
-        # Логинимся
+        AdmLoginPage(browser).open(get_auth_admin_url)
         AdmLoginPage(browser).login()
-        # Нажимаем кнопку Logout
         AdmLoginPage(browser).click_elem(AdmLoginPage.LOGOUT_BTN)
-        # Получаем элемент с заголовком формы авторизации
         el = AdmLoginPage(browser).get_element(AdmLoginPage.AUTH_FORM_TITLE)
-        # Проверяем текст заголовка формы авторизации
         assert el.text == 'Please enter your login details.', 'Разлогин не завершился успехом'
 
 
+@allure.feature("Проверки главной страницы")
 class TestAddToCart:
     """Тестирование добавления товара в корзину - сценарий 3.2."""
 
+    @allure.title("Проверка добавления товара в корзину")
     def test_add_to_cart(self, browser, get_base_url):
         """Проверка добавления товара в корзину"""
-        browser.get(get_base_url)
-        # получаем все элементы с карточками товаров на главной
+        MainPage(browser).open(get_base_url)
         cards = MainPage(browser).get_elements(MainPage.ALL_PROD_CARDS)
-        # кликаем по последней карточке с фотоаппаратом
         cards[-1].click()
-        # добавляем аппарат в корзину с цветом под индексом 2 в списке опций
         ProdCardPage(browser).add_to_cart_color_select(ProdCardPage.COLOR_SELECT, 2)
-        # проверяем, что на экране появляется всплывающее окно об успешном добавлении нужного товара
         ProdCardPage(browser).check_text_in_elem(ProdCardPage.CART_POP_UP, 'Canon EOS 5D')
 
 
+@allure.feature("Проверки изменения валюты")
 class TestCurrChange:
     """Тестирование изменения валюты - сценарий 3.3. и 3.4."""
 
+    @allure.title("Проверка изменения валюты цены на главной странице на евро")
     def test_curr_euro_main_page(self, browser, get_base_url):
         """Проверка изменения валюты цены на главной странице на евро"""
-        browser.get(get_base_url)
-        # выбираем валюту EURO
+        CurrencyElement(browser).open(get_base_url)
         CurrencyElement(browser).change_currency("'EUR'")
-        # получаем все цены с карточек товаров на главной
         prices_elems = MainPage(browser).get_elements(MainPage.ALL_PRICES)
-        # проверяем, что в случайной карточке в цене на конце значок ЕВРО
         assert random.choice(prices_elems).text[-1] == '€'
 
+    @allure.title("Проверка изменения валюты цены на главной странице на Доллары")
     def test_curr_usd_main_page(self, browser, get_base_url):
         """Проверка изменения валюты цены на главной странице на Доллары"""
-        browser.get(get_base_url)
-        # выбираем валюту USD
+        CurrencyElement(browser).open(get_base_url)
         CurrencyElement(browser).change_currency("'USD'")
-        # получаем все цены с карточек товаров на главной
         prices_elems = MainPage(browser).get_elements(MainPage.ALL_PRICES)
-        # проверяем, что в случайной карточке в цене в начале значок USD
         assert random.choice(prices_elems).text[0] == '$'
 
+    @allure.title("Проверка изменения валюты цены на странице каталога на евро")
     def test_curr_euro_catalog_page(self, browser, get_catalog_url):
         """Проверка изменения валюты цены на странице каталога на евро"""
-        browser.get(get_catalog_url)
-        # выбираем валюту EURO
+        CurrencyElement(browser).open(get_catalog_url)
         CurrencyElement(browser).change_currency("'EUR'")
-        # получаем все цены с карточек товаров
         prices_elems = CatDesktopPage(browser).get_elements(CatDesktopPage.ALL_PRICES)
-        # проверяем, что в случайной карточке в цене на конце значок ЕВРО
         assert random.choice(prices_elems).text[-1] == '€'
 
+    @allure.title("Проверка изменения валюты цены на странице каталога на Доллары")
     def test_curr_usd_catalog_page(self, browser, get_catalog_url):
         """Проверка изменения валюты цены на странице каталога на Доллары"""
-        browser.get(get_catalog_url)
-        # выбираем валюту USD
+        CurrencyElement(browser).open(get_catalog_url)
         CurrencyElement(browser).change_currency("'USD'")
-        # получаем все цены с карточек товаров
         prices_elems = CatDesktopPage(browser).get_elements(CatDesktopPage.ALL_PRICES)
-        # проверяем, что в случайной карточке в цене в начале значок USD
         assert random.choice(prices_elems).text[0] == '$'
 
 
+@allure.feature("Проверки админки")
 class TestAdminSite:
     """Проверки сценариев на сайте админки в рамках ДЗ №2"""
 
+    @allure.title("Проверка добавления нового продукта через админку")
     def test_add_new_product(self, browser, get_auth_admin_url, get_base_url):
         """Проверка добавления нового продукта через админку - п.2.1 ДЗ №2"""
-        browser.get(get_auth_admin_url)
+        AdmLoginPage(browser).open(get_auth_admin_url)
         AdmLoginPage(browser).login()
         AdminPage(browser).enter_products_page()
         new_prod_dict = {
@@ -119,9 +110,10 @@ class TestAdminSite:
         MainPage(browser).search_for_product(new_prod_dict['Product_name'])
         MainPage(browser).search_for_elem_contains_text(new_prod_dict['Product_name'])
 
+    @allure.title("Проверка удаления продукта по имени через админку")
     def test_delete_product(self, browser, get_auth_admin_url, get_base_url):
         """Проверка удаления продукта по имени через админку - п.2.2 ДЗ №2"""
-        browser.get(get_auth_admin_url)
+        AdmLoginPage(browser).open(get_auth_admin_url)
         AdmLoginPage(browser).login()
         AdminPage(browser).enter_products_page()
         prod_name_to_delete = AdminPage(browser).get_first_line_prod_name()
@@ -131,7 +123,7 @@ class TestAdminSite:
         try:
             # сначала проверяем случай, когда по поиску на сайте нет никаких результатов
             MainPage(browser).search_for_elem_contains_text('There is no product that matches the search criteria.')
-        except TimeoutException:
+        except False:
             # если поиск выдал какие-то товары, то убеждаемся, что среди них нет удаленного продукта
             elms = MainPage(browser).get_elements(MainPage.PROD_NAME_IN_CARD)
             rez = 1
@@ -141,9 +133,11 @@ class TestAdminSite:
             assert rez, "Удаленный элемент найден в результатах поиска"
 
 
+@allure.feature("Проверки регистрации пользователя")
 class TestRegUser:
-    """Проверка регистрации пользователя Opencart в рамках п.2.3 ДЗ №2"""
+    """Проверки регистрации пользователя Opencart в рамках п.2.3 ДЗ №2"""
 
+    @allure.title("Негативные проверки с невалидными данными ({param_id})")
     @pytest.mark.parametrize('params',
                              [
                                  ('', 'test',
@@ -179,7 +173,7 @@ class TestRegUser:
                              ])
     def test_user_register_valid_neg(self, browser, get_user_reg_url, params):
         """Негативные проверки с невалидными данными"""
-        browser.get(get_user_reg_url)
+        UserRegPage(browser).open(get_user_reg_url)
         UserRegPage(browser).reg_user(
             params[0],
             params[1],
@@ -190,9 +184,10 @@ class TestRegUser:
         el = UserRegPage(browser).get_elements(UserRegPage.MY_ACCOUNT_OPTIONS)
         assert el[-1].text == 'Login', 'Регистрация прошла с невалидными данными'
 
+    @allure.title("Неготивная проверка рег-ции с отключенным чек боксом 'I have read and agree ...'")
     def test_user_register_chbx_policy_unchecked_neg(self, browser, get_user_reg_url):
         """Неготивная проверка регистрации с отключенным чек боксом I have read and agree to the Privacy Policy"""
-        browser.get(get_user_reg_url)
+        UserRegPage(browser).open(get_user_reg_url)
         UserRegPage(browser).fill_reg_fields_only(
             'test',
             'test',
@@ -202,11 +197,12 @@ class TestRegUser:
         UserRegPage(browser).click_elem(UserRegPage.MY_ACCOUNT_BTN)
         el = UserRegPage(browser).get_elements(UserRegPage.MY_ACCOUNT_OPTIONS)
         assert el[-1].text == 'Login', ('Регистрация прошла с отключенным чекбоксом '
-                                       '"I have read and agree to the Privacy Policy"')
+                                        '"I have read and agree to the Privacy Policy"')
 
+    @allure.title("Неготивная проверка регистрации с имейлом, который уже зарегистрирован")
     def test_user_register_same_email(self, browser, get_user_reg_url):
         """Неготивная проверка регистрации с имейлом, который уже зарегистрирован"""
-        browser.get(get_user_reg_url)
+        UserRegPage(browser).open(get_user_reg_url)
         test_email = f'mail{"".join(random.choices("123456789", k=4))}@test.ru'
         UserRegPage(browser).fill_reg_fields_only(
             'test',
@@ -214,7 +210,7 @@ class TestRegUser:
             test_email,
             '12345'
         )
-        browser.get(get_user_reg_url)
+        UserRegPage(browser).open(get_user_reg_url)
         UserRegPage(browser).fill_reg_fields_only(
             'test2',
             'test2',
@@ -225,6 +221,7 @@ class TestRegUser:
         el = UserRegPage(browser).get_elements(UserRegPage.MY_ACCOUNT_OPTIONS)
         assert el[-1].text == 'Login', 'Регистрация прошла с уже заргистрированным email'
 
+    @allure.title("Позитивные проверки с валидными данными ({param_id})")
     @pytest.mark.parametrize('params',
                              [
                                  ('t', 'test',
@@ -251,7 +248,7 @@ class TestRegUser:
                              ])
     def test_user_register_posit(self, browser, get_user_reg_url, params):
         """Позитивные проверки с валидными данными"""
-        browser.get(get_user_reg_url)
+        UserRegPage(browser).open(get_user_reg_url)
         UserRegPage(browser).reg_user(
             params[0],
             params[1],
@@ -261,4 +258,3 @@ class TestRegUser:
         UserRegPage(browser).click_elem(UserRegPage.MY_ACCOUNT_BTN)
         els = UserRegPage(browser).get_elements(UserRegPage.MY_ACCOUNT_OPTIONS)
         assert els[-1].text == 'Logout', 'Авторизация НЕ прошла с валидными данными'
-
