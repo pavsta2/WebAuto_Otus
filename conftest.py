@@ -23,10 +23,20 @@ def pytest_addoption(parser):
 def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
+    driver = item.funcargs["browser"]
+
     if rep.outcome != 'passed':
         item.status = 'failed'
     else:
         item.status = 'passed'
+
+    if item.status == "failed":
+        allure.attach(
+            name="failure_screenshot",
+            body=driver.get_screenshot_as_png(),
+            attachment_type=allure.attachment_type.PNG
+        )
+
 
 @pytest.fixture
 def get_base_url(request):
@@ -58,19 +68,24 @@ def get_user_reg_url(request):
     return f"http://{request.config.getoption('--app_url')}/index.php?route=account/register"
 
 
-@pytest.fixture()
-def browser(request):
-    driver = None
-    driver_storage = request.config.getoption('--ya_driver')
-    browser_type = request.config.getoption('--browser')
-    headless = request.config.getoption('--headless')
+@pytest.fixture(scope='session')
+def logger(request):
     log_level = request.config.getoption('--log_level')
-
     logger = logging.getLogger(request.node.name)
     logfile_handler = logging.FileHandler(f'Logs/{request.node.name}.log')
     logfile_handler.setFormatter(logging.Formatter('%(levelname)s %(message)s %(asctime)s'))
     logger.addHandler(logfile_handler)
     logger.setLevel(log_level)
+    return logger
+
+
+@pytest.fixture(scope='session')
+def browser(request, logger):
+    driver = None
+    driver_storage = request.config.getoption('--ya_driver')
+    browser_type = request.config.getoption('--browser')
+    headless = request.config.getoption('--headless')
+    log_level = request.config.getoption('--log_level')
 
     logger.info('Test is started at %s' % datetime.datetime.now())
 
@@ -100,12 +115,5 @@ def browser(request):
 
     yield driver
     logger.info('Test is finished at %s' % datetime.datetime.now())
-
-    if request.node.status == "failed":
-        allure.attach(
-            name="failure_screenshot",
-            body=driver.get_screenshot_as_png(),
-            attachment_type=allure.attachment_type.PNG
-        )
 
     driver.quit()
