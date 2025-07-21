@@ -4,6 +4,7 @@ import datetime
 import pytest
 from selenium import webdriver
 import allure
+import tempfile
 from selenium.webdriver.chromium.options import ChromiumOptions
 from selenium.webdriver.chromium.service import ChromiumService
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -14,8 +15,7 @@ def pytest_addoption(parser):
     parser.addoption('--browser', default="chrome", help="Which browser to open")
     # parser.addoption("--app_url", default='192.168.0.100:8081', help='App base url')
     parser.addoption("--app_url", default='10.0.2.15:8081', help='App base url')
-    parser.addoption("--ya_driver", default='/Users/darinastarshinova/yandexdriver',
-                     help='Ya driver storage')
+    parser.addoption("--ya_driver", default='/Users/darinastarshinova/yandexdriver', help='Ya driver storage')
     parser.addoption("--headless", action='store_true', help='Headless mode')
     parser.addoption('--log_level', action='store', default='INFO')
     parser.addoption('--remote_start', action='store_true', help='Remote start')
@@ -27,8 +27,10 @@ def pytest_addoption(parser):
 def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
-    request = item.funcargs.get("request")
-    driver = getattr(request.node, "driver", None)
+    # request = item.funcargs.get("request")
+    # driver = getattr(request.node, "driver", None)
+
+    driver = item.funcargs.get("driver", None)
 
     if rep.outcome != 'passed':
         item.status = 'failed'
@@ -36,12 +38,14 @@ def pytest_runtest_makereport(item, call):
         item.status = 'passed'
 
     if item.status == "failed":
-        allure.attach(
-            name="failure_screenshot",
-            body=driver.get_screenshot_as_png(),
-            attachment_type=allure.attachment_type.PNG
-        )
-
+        try:
+            allure.attach(
+                name="failure_screenshot",
+                body=driver.get_screenshot_as_png(),
+                attachment_type=allure.attachment_type.PNG
+            )
+        except:
+            pass
 
 @pytest.fixture
 def get_base_url(request):
