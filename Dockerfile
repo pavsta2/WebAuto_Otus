@@ -2,13 +2,6 @@ FROM python:3.11.13-alpine3.22
 
 USER root
 
-RUN apk add --no-cache \
-    chromium \
-    chromium-chromedriver \
-    xvfb \
-    tzdata \
-    && cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
-
 RUN mkdir -p /root/WebAuto_Otus
 
 WORKDIR /root/WebAuto_Otus
