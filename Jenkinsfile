@@ -43,7 +43,7 @@ pipeline {
                 steps {
                     sh '''
                     echo "Сборка образа с тестами"
-                    docker build -t ${TEST_IMAGE} .
+                    /usr/bin/docker build -t ${TEST_IMAGE} .
                     '''
                 }
             }
