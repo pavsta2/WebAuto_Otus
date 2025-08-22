@@ -28,7 +28,7 @@ pipeline {
         )
         }
         environment {
-        COMPOSE_FILE = 'docker-compose_jen.yml'
+        COMPOSE_FILE = 'compose.yml'
         TEST_IMAGE = 'autotests:latest'
         ALLURE_RESULTS = 'allure-results'
         }
