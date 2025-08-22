@@ -1,4 +1,4 @@
-pipline {
+pipeline {
     agent any
     parameters {
         choices (
@@ -95,4 +95,4 @@ pipline {
                 }
             }
         }
-    }
+}
