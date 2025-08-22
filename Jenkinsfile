@@ -67,24 +67,6 @@ pipeline {
                     '''
                 }
             }
-            stage('Wait for OpenCart to be Ready') {
-                steps {
-                    script {
-                        timeout(time: 5, unit: 'MINUTES') {
-                            waitUntil {
-                                script {
-                                    def status = sh(
-                                        script: "docker exec opencart curl -f http://localhost:8080 || exit 1",
-                                        returnStatus: true,
-                                        returnStdout: true
-                                    )
-                                    return output == 0
-                                }
-                            }
-                        }
-                    }
-                }
-            }
             stage('Run UI Tests with Parameters') {
                 steps {
                     sh """
