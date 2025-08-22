@@ -74,10 +74,11 @@ pipeline {
                             waitUntil {
                                 script {
                                     def status = sh(
-                                        script: "curl -f -s -o /dev/null http://localhost:8080 || exit 1",
-                                        returnStatus: true
+                                        script: "docker exec opencart curl -f http://localhost:8080 || exit 1",
+                                        returnStatus: true,
+                                        returnStdout: true
                                     )
-                                    return status == 0
+                                    return output == 0
                                 }
                             }
                         }
