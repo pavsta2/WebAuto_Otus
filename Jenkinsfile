@@ -40,7 +40,6 @@ pipeline {
                         sh '''
                         cp "$ENV_FILE" .env
                         chmod 600 .env
-                        cat .env  # опционально: логирование (не для продакшена!)
                         '''
                     }
                 }
@@ -74,7 +73,7 @@ pipeline {
                             waitUntil {
                                 script {
                                     def status = sh(
-                                        script: "curl -f -s -o /dev/null http://localhost:8081 || exit 1",
+                                        script: "curl -f -s -o /dev/null http://localhost:8080 || exit 1",
                                         returnStatus: true
                                     )
                                     return status == 0
