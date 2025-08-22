@@ -52,7 +52,7 @@ pipeline {
                 steps {
                     sh '''
                     echo "Запуск OpenCart, БД, Selenoid и UI"
-                    docker-compose -f ${COMPOSE_FILE} up -d
+                    docker compose -f ${COMPOSE_FILE} up -d
                     '''
                 }
             }
