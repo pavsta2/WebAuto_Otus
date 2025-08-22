@@ -1,17 +1,17 @@
 pipeline {
     agent any
     parameters {
-        choices (
+        choice (
             name: "BROWSER",
             choices: 'chrome\nfirefox',
             description: "Browser name for autotests"
         )
-        choices (
+        choice (
             name: "LOG_LEVEL",
             choices: 'INFO\nDEBUG',
             description: "Set log level"
         )
-        choices (
+        choice (
             name: "BROWSER_VER",
             choices: '128.0\n127.0',
             description: "Set browser version"
