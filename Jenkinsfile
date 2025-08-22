@@ -80,6 +80,7 @@ pipeline {
                     -e BROWSER='${params.BROWSER}' \\
                     -e BROWSER_VER='${params.BROWSER_VER}' \\
                     -e REMOTE_URL='${params.REMOTE_URL}' \\
+                    -e XDIST='${params.XDIST}' \\
                     -e APP_URL='${params.APP_URL}' \\
                     -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                     -e ALLURE_RESULTS='${ALLURE_RESULTS}' \\
