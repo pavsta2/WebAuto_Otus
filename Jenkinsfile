@@ -33,17 +33,7 @@ pipeline {
         ALLURE_RESULTS = 'allure-results'
         }
         stages {
-            stage('Prepare .env') {
-                steps {
-                    // Загружаем .env как файл в рабочую директорию
-                    withCredentials([file(credentialsId: 'app-env-file', variable: 'ENV_FILE')]) {
-                        sh '''
-                        cp "$ENV_FILE" .env
-                        chmod 600 .env
-                        '''
-                    }
-                }
-            }
+
             stage('Checkout from GitHub') {
                 steps {
                     git branch: 'homework_jenkins',
