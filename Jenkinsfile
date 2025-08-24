@@ -86,7 +86,7 @@ pipeline {
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='${ALLURE_RESULTS}' \\
                         --network selenoid3 \\
-                        -v ${WORKSPACE}/${ALLURE_RESULTS}:/root/WebAuto_Otus/${ALLURE_RESULTS} \\
+                        -v "\${WORKSPACE}/${ALLURE_RESULTS}:/root/WebAuto_Otus/${ALLURE_RESULTS}" \\
                         ${TEST_IMAGE}
                         """
                     }
