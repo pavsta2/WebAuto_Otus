@@ -80,7 +80,6 @@ pipeline {
                         chmod 777 "\${WORKSPACE}/${ALLURE_RESULTS}"
 
                         docker run --rm \\
-                        -u \$(id -u jenkins):\$(id -g jenkins) \\
                         -e BROWSER='${params.BROWSER}' \\
                         -e BROWSER_VER='${params.BROWSER_VER}' \\
                         -e REMOTE_URL='${params.REMOTE_URL}' \\

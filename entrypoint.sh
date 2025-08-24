@@ -2,11 +2,6 @@
 set +e
 . .venv/bin/activate
 
-echo "=== Перед тестами ==="
-echo "ALLURE_RESULTS: $ALLURE_RESULTS"
-echo "Текущая директория: $(pwd)"
-ls -la "$ALLURE_RESULTS" || echo "Папка $ALLURE_RESULTS не существует"
-
 pytest --browser "$BROWSER" \
       --log_level "$LOG_LEVEL" \
       --browser_ver "$BROWSER_VER" \
@@ -14,6 +9,8 @@ pytest --browser "$BROWSER" \
       --remote_start \
       --remote_url="$REMOTE_URL" \
       --alluredir="$ALLURE_RESULTS"
+
+chmod -R 777 "$ALLURE_RESULTS"
 
 echo "=== После тестов ==="
 ls -la "$ALLURE_RESULTS" || echo "Директория $ALLURE_RESULTS не существует"
