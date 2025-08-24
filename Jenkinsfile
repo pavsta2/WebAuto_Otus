@@ -77,6 +77,7 @@ pipeline {
                         echo "REMOTE_URL: ${params.REMOTE_URL}"
                         echo "APP_URL: ${params.APP_URL}"
                         mkdir -p "\${WORKSPACE}/${ALLURE_RESULTS}"
+                        chmod 777 "\${WORKSPACE}/${ALLURE_RESULTS}"
 
                         docker run --rm \\
                         -e BROWSER='${params.BROWSER}' \\
