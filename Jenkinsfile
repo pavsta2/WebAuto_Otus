@@ -69,25 +69,27 @@ pipeline {
             }
             stage('Run UI Tests with Parameters') {
                 steps {
-                    sh """
-                    echo '=== Запуск автотестов с параметрами ==='
-                    echo "BROWSER: ${params.BROWSER}"
-                    echo "BROWSER_VER: ${params.BROWSER_VER}"
-                    echo "REMOTE_URL: ${params.REMOTE_URL}"
-                    echo "APP_URL: ${params.APP_URL}"
+                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                        sh """
+                        echo '=== Запуск автотестов с параметрами ==='
+                        echo "BROWSER: ${params.BROWSER}"
+                        echo "BROWSER_VER: ${params.BROWSER_VER}"
+                        echo "REMOTE_URL: ${params.REMOTE_URL}"
+                        echo "APP_URL: ${params.APP_URL}"
 
-                    docker run --rm \\
-                    -e BROWSER='${params.BROWSER}' \\
-                    -e BROWSER_VER='${params.BROWSER_VER}' \\
-                    -e REMOTE_URL='${params.REMOTE_URL}' \\
-                    -e XDIST='${params.XDIST}' \\
-                    -e APP_URL='${params.APP_URL}' \\
-                    -e LOG_LEVEL='${params.LOG_LEVEL}' \\
-                    -e ALLURE_RESULTS='${ALLURE_RESULTS}' \\
-                    --network selenoid3 \\
-                    -v \$(pwd)/${ALLURE_RESULTS}:/app/${ALLURE_RESULTS} \\
-                    ${TEST_IMAGE}
-                    """
+                        docker run --rm \\
+                        -e BROWSER='${params.BROWSER}' \\
+                        -e BROWSER_VER='${params.BROWSER_VER}' \\
+                        -e REMOTE_URL='${params.REMOTE_URL}' \\
+                        -e XDIST='${params.XDIST}' \\
+                        -e APP_URL='${params.APP_URL}' \\
+                        -e LOG_LEVEL='${params.LOG_LEVEL}' \\
+                        -e ALLURE_RESULTS='${ALLURE_RESULTS}' \\
+                        --network selenoid3 \\
+                        -v \$(pwd)/${ALLURE_RESULTS}:/app/${ALLURE_RESULTS} \\
+                        ${TEST_IMAGE}
+                        """
+                    }
                 }
             }
             stage('Generate Allure Report') {
