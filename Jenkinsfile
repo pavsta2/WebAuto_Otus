@@ -93,9 +93,6 @@ pipeline {
                 }
             }
             stage('Generate Allure Report') {
-                when {
-                    expression { fileExists("${ALLURE_RESULTS}") }
-                }
                 steps {
                     script {
                         allure([
