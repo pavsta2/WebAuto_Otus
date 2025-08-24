@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e
-
 . .venv/bin/activate
 
 echo "=== Перед тестами ==="
@@ -17,7 +15,6 @@ pytest --browser "$BROWSER" \
       --remote_url="$REMOTE_URL" \
       --alluredir="$ALLURE_RESULTS"
 
-set +e
 echo "=== После тестов ==="
 ls -la "$ALLURE_RESULTS" || echo "Директория $ALLURE_RESULTS не существует"
 find . -name "*.json" | xargs ls -la 2>/dev/null || echo "JSON-файлы не найдены"
