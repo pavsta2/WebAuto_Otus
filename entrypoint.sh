@@ -12,3 +12,7 @@ pytest --browser "$BROWSER" \
       --remote_start \
       --remote_url="$REMOTE_URL" \
       --alluredir="$ALLURE_RESULTS"
+
+echo "=== После тестов ==="
+ls -la "$ALLURE_RESULTS" || echo "Директория $ALLURE_RESULTS не существует"
+find . -name "*.json" | xargs ls -la 2>/dev/null || echo "JSON-файлы не найдены"
