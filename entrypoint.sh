@@ -4,6 +4,10 @@ set -e
 
 . .venv/bin/activate
 
+echo "=== Перед тестами ==="
+echo "ALLURE_RESULTS: $ALLURE_RESULTS"
+echo "Текущая директория: $(pwd)"
+ls -la "$ALLURE_RESULTS" || echo "Папка $ALLURE_RESULTS не существует"
 
 pytest --browser "$BROWSER" \
       --log_level "$LOG_LEVEL" \
