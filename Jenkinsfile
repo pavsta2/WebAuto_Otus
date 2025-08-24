@@ -40,7 +40,7 @@ pipeline {
                         sh '''
                         cp "$ENV_FILE" .env
                         chmod 600 .env
-                        cat .env  # опционально: логирование (не для продакшена!)
+                        cat .env
                         '''
                     }
                 }
