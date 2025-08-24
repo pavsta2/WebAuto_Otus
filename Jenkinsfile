@@ -86,7 +86,7 @@ pipeline {
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='${ALLURE_RESULTS}' \\
                         --network selenoid3 \\
-                        -v \$(pwd)/${ALLURE_RESULTS}:/root/WebAuto_Otus/${ALLURE_RESULTS} \\
+                        -v /var/jenkins_home/workspace/Homework/${ALLURE_RESULTS}:/root/WebAuto_Otus/${ALLURE_RESULTS} \\
                         ${TEST_IMAGE}
                         """
                     }
@@ -100,7 +100,7 @@ pipeline {
                             jdk: '',
                             properties: [],
                             reportBuildPolicy: 'ALWAYS',
-                            results: [[path: "${ALLURE_RESULTS}"]]
+                            results: [[path: "/var/jenkins_home/workspace/Homework/${ALLURE_RESULTS}"]]
                         ])
                     }
                 }
