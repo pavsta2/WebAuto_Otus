@@ -107,5 +107,24 @@ pipeline {
                     }
                 }
             }
+            stage('Fetch Allure Results') {
+                steps {
+                    sh '''
+                    echo "=== Копируем результаты Allure из volume в workspace ==="
+                    # Убедимся, что папка существует
+                    mkdir -p "$WORKSPACE/allure-results"
+
+                    # Копируем файлы (если они есть на хосте)
+                    if [ -d "/var/jenkins_home/workspace/Homework/allure-results" ]; then
+                        cp -r /var/jenkins_home/workspace/Homework/allure-results/* "$WORKSPACE/allure-results/" 2>/dev/null || true
+                        echo "Файлы скопированы"
+                    else
+                        echo "Папка /var/jenkins_home/workspace/Homework/allure-results не найдена"
+                    fi
+
+                    ls -la "$WORKSPACE/allure-results"
+                    '''
+                }
+            }
         }
 }
