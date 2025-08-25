@@ -80,6 +80,7 @@ pipeline {
 
                         # Создаём папку allure-results в workspace
                         mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
+                        chmod -R 777 "$WORKSPACE/${ALLURE_RESULTS}"
 
                         docker run --rm \\
                         -e BROWSER='${params.BROWSER}' \\
