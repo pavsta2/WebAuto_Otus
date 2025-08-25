@@ -93,6 +93,7 @@ pipeline {
                         -e APP_URL='${params.APP_URL}' \\
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='/root/WebAuto_Otus/${ALLURE_RESULTS}' \\
+                        --group-add $(getent group jenkins | cut -d: -f3) \\
                         --network selenoid3 \\
                         -v "\$WORKSPACE/${ALLURE_RESULTS}:/${ALLURE_RESULTS}" \\
                         ${TEST_IMAGE}
