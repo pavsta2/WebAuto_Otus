@@ -106,7 +106,7 @@ pipeline {
                             jdk: '',
                             properties: [],
                             reportBuildPolicy: 'ALWAYS',
-                            results: [[path: "${ALLURE_RESULTS}"]]
+                            results: [[path: "\$WORKSPACE/${ALLURE_RESULTS}"]]
                         ])
                     }
                 }
