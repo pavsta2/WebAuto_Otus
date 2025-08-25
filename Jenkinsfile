@@ -99,18 +99,13 @@ pipeline {
             }
             stage('Generate Allure Report') {
                 steps {
-                    sh '''
-                    # Проверяем содержимое тома
-                    echo "Содержимое тома jenkins_home:"
-                    docker run --rm -v jenkins_home:/check alpine ls -la /check
-                    '''
                     script {
                         allure([
                             includeProperties: false,
                             jdk: '',
                             properties: [],
                             reportBuildPolicy: 'ALWAYS',
-                            results: [[path: './${ALLURE_RESULTS}']]
+                            results: [[path: './allure-results']]
                         ])
                     }
                 }
