@@ -12,7 +12,6 @@ RUN mkdir -p /root/WebAuto_Otus/Logs
 RUN pip install --no-cache uv && \
     uv venv && \
     uv pip install -r requirements.txt
-RUN ls -la /root/WebAuto_Otus/.venv/bin/
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
