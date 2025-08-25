@@ -1,12 +1,12 @@
 #!/bin/sh
-set -e
+set +e
 
 . .venv/bin/activate
 
 ALLURE_RESULTS="/root/WebAuto_Otus/allure-results"
-mkdir -p "$ALLURE_RESULTS"
+mkdir -p $ALLURE_RESULTS
 
-chmod -R 777 "$ALLURE_RESULTS"
+chmod -R 777 $ALLURE_RESULTS
 
 echo "=== Пишем результаты в: $ALLURE_RESULTS ==="
 
@@ -16,4 +16,10 @@ pytest tests/test_adm_login_page_elems.py --browser "$BROWSER" \
       --numprocesses="$XDIST" \
       --remote_start \
       --remote_url="$REMOTE_URL" \
-      --alluredir="$ALLURE_RESULTS"
+      --alluredir=$ALLURE_RESULTS
+
+echo "=== Содержимое $ALLURE_RESULTS ==="
+ls -la $ALLURE_RESULTS
+
+echo "=== Проверка первого JSON-файла ==="
+head -n 20 "$(find "$ALLURE_RESULTS" -name "*.json" -type f | head -1)"
