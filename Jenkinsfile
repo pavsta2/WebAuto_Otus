@@ -106,7 +106,7 @@ pipeline {
                             jdk: '',
                             properties: [],
                             reportBuildPolicy: 'ALWAYS',
-                            results: [[path: "\$WORKSPACE/${ALLURE_RESULTS}"]]
+                            results: [[path: "/root/WebAuto_Otus/${ALLURE_RESULTS}"]]
                         ])
                     }
                 }
