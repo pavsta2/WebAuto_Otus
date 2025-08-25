@@ -1,6 +1,6 @@
 FROM python:3.11.13-alpine3.22
 
-USER root
+USER jenkins
 
 RUN mkdir -p /root/WebAuto_Otus
 
