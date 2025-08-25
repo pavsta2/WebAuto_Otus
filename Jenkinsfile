@@ -102,7 +102,7 @@ pipeline {
                     sh '''
                     # Проверяем содержимое тома
                     echo "Содержимое тома jenkins_home:"
-                    docker run --rm -v jenkins_home:/check alpine ls -la /check"
+                    docker run --rm -v jenkins_home:/check alpine ls -la /check
                     '''
                     script {
                         allure([
