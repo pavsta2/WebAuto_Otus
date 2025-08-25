@@ -77,6 +77,9 @@ pipeline {
                         echo "REMOTE_URL: ${params.REMOTE_URL}"
                         echo "APP_URL: ${params.APP_URL}"
                         echo "WORKSPACE, куда монтируем рез-ты тестов: \$WORKSPACE"
+                        echo "WORKSPACE: $WORKSPACE"
+                        touch "$WORKSPACE/test.txt" && echo "OK" || echo "FAIL"
+                        ls -la "$WORKSPACE"
 
                         rm -rf "\$WORKSPACE/${ALLURE_RESULTS}"/*
                         mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
@@ -91,8 +94,7 @@ pipeline {
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='/root/WebAuto_Otus/${ALLURE_RESULTS}' \\
                         --network selenoid3 \\
-                        -u 1000:1000 \\
-                        -v "\$WORKSPACE/${ALLURE_RESULTS}:/root/WebAuto_Otus/${ALLURE_RESULTS}" \\
+                        -v "\$WORKSPACE/${ALLURE_RESULTS}:/${ALLURE_RESULTS}" \\
                         ${TEST_IMAGE}
                         """
                     }

@@ -6,8 +6,6 @@ set +e
 ALLURE_RESULTS="${ALLURE_RESULTS:-/root/WebAuto_Otus/allure-results}"
 mkdir -p $ALLURE_RESULTS
 
-chmod -R 777 $ALLURE_RESULTS
-
 echo "=== Пишем результаты в: $ALLURE_RESULTS ==="
 
 pytest tests/test_adm_login_page_elems.py --browser "$BROWSER" \
@@ -17,6 +15,8 @@ pytest tests/test_adm_login_page_elems.py --browser "$BROWSER" \
       --remote_start \
       --remote_url="$REMOTE_URL" \
       --alluredir=$ALLURE_RESULTS
+
+chmod -R 777 $ALLURE_RESULTS
 
 echo "=== Содержимое $ALLURE_RESULTS ==="
 ls -la $ALLURE_RESULTS
