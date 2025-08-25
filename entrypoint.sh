@@ -1,6 +1,5 @@
 #!/bin/sh
 set +e
-. .venv/bin/activate
 
 pytest --browser "$BROWSER" \
       --log_level "$LOG_LEVEL" \
