@@ -96,8 +96,13 @@ pipeline {
                 steps {
                     sh '''
                     echo "=== Копируем результаты из volume в workspace ==="
+                    echo "WORKSPACE: $WORKSPACE"
                     # Убедимся, что папка существует
                     mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
+
+                    # Проверим, есть ли что копировать
+                    echo "Содержимое тома jenkins_allure:"
+                    docker run --rm -v jenkins_allure:/check alpine ls -la /check
 
                     # Создаём временный контейнер, чтобы скопировать файлы
                     docker run --rm \\

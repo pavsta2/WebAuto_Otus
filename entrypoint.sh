@@ -3,7 +3,7 @@ set -e
 
 . .venv/bin/activate
 
-pytest --browser "$BROWSER" \
+pytest test_adm_login_page_elems.py --browser "$BROWSER" \
       --log_level "$LOG_LEVEL" \
       --browser_ver "$BROWSER_VER" \
       --numprocesses="$XDIST" \
