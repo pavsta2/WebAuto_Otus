@@ -90,7 +90,7 @@ pipeline {
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='${ALLURE_RESULTS}' \\
                         --network selenoid3 \\
-                        -v "\$WORKSPACE/${ALLURE_RESULTS}:/allure-results" \\
+                        -v "\$WORKSPACE/${ALLURE_RESULTS}:root/WebAuto_Otus/${ALLURE_RESULTS}" \\
                         ${TEST_IMAGE}
                         """
                     }
@@ -98,6 +98,7 @@ pipeline {
             }
             stage('Generate Allure Report') {
                 steps {
+                    sh ls -la $WORKSPACE/${ALLURE_RESULTS}
                     script {
                         allure([
                             includeProperties: false,
