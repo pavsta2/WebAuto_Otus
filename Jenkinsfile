@@ -97,19 +97,19 @@ pipeline {
                     sh '''
                     echo "=== Копируем результаты из volume в workspace ==="
                     # Убедимся, что папка существует
-                    mkdir -p "$WORKSPACE/${ALLURE_RESULTS}"
+                    mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
 
                     # Создаём временный контейнер, чтобы скопировать файлы
                     docker run --rm \\
                         -v jenkins_allure:/source \\
-                        -v "$WORKSPACE/${ALLURE_RESULTS}":/target \\
+                        -v "\$WORKSPACE/${ALLURE_RESULTS}":/target \\
                         alpine cp -r /source/. /target/
 
                     # Делаем файлы доступными
-                    chmod -R 777 "$WORKSPACE/${ALLURE_RESULTS}"
+                    chmod -R 777 "\$WORKSPACE/${ALLURE_RESULTS}"
 
                     echo "Содержимое результатов:"
-                    ls -la "$WORKSPACE/${ALLURE_RESULTS}"
+                    ls -la "\$WORKSPACE/${ALLURE_RESULTS}"
                     '''
                 }
             }
