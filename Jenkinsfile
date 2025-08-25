@@ -91,7 +91,7 @@ pipeline {
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='/root/WebAuto_Otus/${ALLURE_RESULTS}' \\
                         --network selenoid3 \\
-                        -v "\$WORKSPACE/${ALLURE_RESULTS}:/root/WebAuto_Otus/${ALLURE_RESULTS}" \\
+                        -v "jenkins_home:/root/WebAuto_Otus" \\
                         ${TEST_IMAGE}
                         """
                     }
@@ -99,14 +99,18 @@ pipeline {
             }
             stage('Generate Allure Report') {
                 steps {
-                    sh "ls -la \$WORKSPACE/${ALLURE_RESULTS}"
+                    sh '''
+                    # Проверяем содержимое тома
+                    echo "Содержимое тома jenkins_home:"
+                    docker run --rm -v jenkins_home:/check alpine ls -la /check"
+                    '''
                     script {
                         allure([
                             includeProperties: false,
                             jdk: '',
                             properties: [],
                             reportBuildPolicy: 'ALWAYS',
-                            results: [[path: '${ALLURE_RESULTS}']]
+                            results: [[path: './${ALLURE_RESULTS}']]
                         ])
                     }
                 }
