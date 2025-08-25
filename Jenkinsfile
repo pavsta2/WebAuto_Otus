@@ -78,9 +78,6 @@ pipeline {
                         echo "APP_URL: ${params.APP_URL}"
                         echo "WORKSPACE, куда монтируем рез-ты тестов: \$WORKSPACE"
 
-                        rm -rf "\$WORKSPACE/${ALLURE_RESULTS}"/*
-                        mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
-
                         docker run --rm \\
                         -u $(id -u jenkins):$(id -g jenkins) \\
                         -e BROWSER='${params.BROWSER}' \\
