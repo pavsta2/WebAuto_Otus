@@ -76,6 +76,10 @@ pipeline {
                         echo "BROWSER_VER: ${params.BROWSER_VER}"
                         echo "REMOTE_URL: ${params.REMOTE_URL}"
                         echo "APP_URL: ${params.APP_URL}"
+                        echo "WORKSPACE: \$WORKSPACE"
+
+                        # Создаём папку allure-results в workspace
+                        mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
 
                         docker run --rm \\
                         -e BROWSER='${params.BROWSER}' \\
@@ -86,7 +90,7 @@ pipeline {
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='${ALLURE_RESULTS}' \\
                         --network selenoid3 \\
-                        -v jenkins_allure:/root/WebAuto_Otus/${ALLURE_RESULTS} \\
+                        -v "\$WORKSPACE/${ALLURE_RESULTS}:/allure-results" \\
                         ${TEST_IMAGE}
                         """
                     }
