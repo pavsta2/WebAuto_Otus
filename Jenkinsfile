@@ -98,7 +98,7 @@ pipeline {
             }
             stage('Generate Allure Report') {
                 steps {
-                    sh ls -la "\$WORKSPACE/${ALLURE_RESULTS}"
+                    sh "ls -la \$WORKSPACE/${ALLURE_RESULTS}"
                     script {
                         allure([
                             includeProperties: false,
