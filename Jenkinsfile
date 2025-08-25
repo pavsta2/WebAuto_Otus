@@ -89,7 +89,7 @@ pipeline {
                         -e XDIST='${params.XDIST}' \\
                         -e APP_URL='${params.APP_URL}' \\
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
-                        -e ALLURE_RESULTS='${ALLURE_RESULTS}' \\
+                        -e ALLURE_RESULTS='/root/WebAuto_Otus/${ALLURE_RESULTS}' \\
                         --network selenoid3 \\
                         -v "\$WORKSPACE/${ALLURE_RESULTS}:/root/WebAuto_Otus/${ALLURE_RESULTS}" \\
                         ${TEST_IMAGE}

@@ -3,7 +3,7 @@ set +e
 
 . .venv/bin/activate
 
-ALLURE_RESULTS="/root/WebAuto_Otus/allure-results"
+ALLURE_RESULTS="${ALLURE_RESULTS:-/root/WebAuto_Otus/allure-results}"
 mkdir -p $ALLURE_RESULTS
 
 chmod -R 777 $ALLURE_RESULTS
