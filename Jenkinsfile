@@ -51,15 +51,6 @@ pipeline {
                         url: 'https://github.com/pavsta2/WebAuto_Otus.git'
                 }
             }
-            stage('Check Docker') {
-                steps {
-                    sh '''
-                    docker --version
-                    ls -la /var/run/docker.sock
-                    docker info
-                    '''
-                }
-            }
             stage('Build Test Image with Fresh Code') {
                 steps {
                     sh '''
