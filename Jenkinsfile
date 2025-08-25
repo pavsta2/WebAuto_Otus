@@ -80,7 +80,6 @@ pipeline {
 
                         rm -rf "\$WORKSPACE/${ALLURE_RESULTS}"/*
                         mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
-                        chmod -R 777 "\$WORKSPACE/${ALLURE_RESULTS}"
 
                         docker run --rm \\
                         -u $(id -u jenkins):$(id -g jenkins) \\
