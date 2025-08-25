@@ -78,8 +78,11 @@ pipeline {
                         echo "APP_URL: ${params.APP_URL}"
                         echo "WORKSPACE, куда монтируем рез-ты тестов: \$WORKSPACE"
 
+                        rm -rf "\$WORKSPACE/${ALLURE_RESULTS}"/*
+                        mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
+                        chmod -R 777 "$WORKSPACE/${ALLURE_RESULTS}"
+
                         docker run --rm \\
-                        -u $(id -u jenkins):$(id -g jenkins) \\
                         -e BROWSER='${params.BROWSER}' \\
                         -e BROWSER_VER='${params.BROWSER_VER}' \\
                         -e REMOTE_URL='${params.REMOTE_URL}' \\
@@ -88,7 +91,7 @@ pipeline {
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='/root/WebAuto_Otus/${ALLURE_RESULTS}' \\
                         --network selenoid3 \\
-                        -v "\$WORKSPACE/${ALLURE_RESULTS}:/allure-results" \\
+                        -v "\$WORKSPACE/${ALLURE_RESULTS}:/root/WebAuto_Otus/${ALLURE_RESULTS}" \\
                         ${TEST_IMAGE}
                         """
                     }
