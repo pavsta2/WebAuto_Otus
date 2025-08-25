@@ -76,7 +76,7 @@ pipeline {
                         echo "BROWSER_VER: ${params.BROWSER_VER}"
                         echo "REMOTE_URL: ${params.REMOTE_URL}"
                         echo "APP_URL: ${params.APP_URL}"
-                        echo "WORKSPACE: \$WORKSPACE"
+                        echo "WORKSPACE, куда монтируем рез-ты тестов: \$WORKSPACE"
 
                         # Создаём папку allure-results в workspace
                         mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"

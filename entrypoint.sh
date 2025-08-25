@@ -8,6 +8,8 @@ mkdir -p "$ALLURE_RESULTS"
 
 chmod -R 777 "$ALLURE_RESULTS"
 
+echo "=== Пишем результаты в: $ALLURE_RESULTS ==="
+
 pytest tests/test_adm_login_page_elems.py --browser "$BROWSER" \
       --log_level "$LOG_LEVEL" \
       --browser_ver "$BROWSER_VER" \
