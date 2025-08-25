@@ -86,7 +86,7 @@ pipeline {
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='${ALLURE_RESULTS}' \\
                         --network selenoid3 \\
-                        -v jenkins_home:/root/WebAuto_Otus \\
+                        -v jenkins_allure:/'${ALLURE_RESULTS}' \\
                         ${TEST_IMAGE}
                         """
                     }
