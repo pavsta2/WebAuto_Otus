@@ -92,7 +92,7 @@ pipeline {
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='/root/WebAuto_Otus/${ALLURE_RESULTS}' \\
                         --network selenoid3 \\
-                        -v "jenkins_allure:/${ALLURE_RESULTS}" \\
+                        -v "jenkins_results:/${ALLURE_RESULTS}" \\
                         ${TEST_IMAGE}
                         """
                     }
@@ -105,11 +105,11 @@ pipeline {
                     mkdir -p "$WORKSPACE/allure-results"
                     cd "$WORKSPACE/allure-results"
                     echo ==содержимое волума jenkins_allur==
-                    docker run --rm -v jenkins_allure:/source alpine ls -ls /source
+                    docker run --rm -v jenkins_results:/data alpine ls -ls /data
                     # никак не получалось смонтировать или скопировать результаты Allure в workspace (что то с правами)
                     # нашел такое решение: захватить stdout и разархивировать в нужное место - сработало
                     echo ==теперь копируем в workspace==
-                    docker run --rm -v jenkins_allure:/source alpine tar -c -f - -C /source . | tar -x -f -
+                    docker run --rm -v jenkins_results:/data alpine tar -c -f - -C /data . | tar -x -f -
 
                     chmod -R 777 .
                     echo ==финальное состояние workspace==
