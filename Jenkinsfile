@@ -117,10 +117,7 @@ pipeline {
 
                     # Создаём папку
                     mkdir -p "$WORKSPACE/allure-results"
-                    # Установим zip, если нет
-                    if ! command -v unzip > /dev/null; then
-                        apt-get update && apt-get install -y unzip
-                    fi
+                    apk add --no-cache zip
 
                     # Архивируем и распаковываем через zip
                     docker run --rm \
@@ -147,7 +144,7 @@ pipeline {
                             jdk: '',
                             properties: [],
                             reportBuildPolicy: 'ALWAYS',
-                            results: [[path: './allure-results']]
+                            results: [[path: '${ALLURE_RESULTS}']]
                         ])
                     }
                 }
