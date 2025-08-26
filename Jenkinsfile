@@ -105,6 +105,21 @@ pipeline {
             stage('Fetch Allure Results') {
                 steps {
                     sh '''
+                    # Проверка 1: существует ли том jenkins_allure?
+                    echo "Проверка: существует ли том jenkins_allure?"
+                    docker volume inspect jenkins_allure > /dev/null 2>&1
+                    if [ $? -ne 0 ]; then
+                        echo "Ошибка: том jenkins_allure не существует"
+                        exit 1
+                    fi
+                    echo "Том jenkins_allure существует"
+
+                    # Проверка 2: есть ли что-то в томе?
+                    echo "Содержимое тома jenkins_allure:"
+                    docker run --rm \
+                    -v jenkins_allure:/check \
+                    alpine ls -la /check
+
                     echo "=== Копируем результаты в WORKSPACE ==="
                     echo "WORKSPACE: $WORKSPACE"
 
