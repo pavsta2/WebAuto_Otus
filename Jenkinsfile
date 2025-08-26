@@ -77,7 +77,8 @@ pipeline {
                         echo "REMOTE_URL: ${params.REMOTE_URL}"
 
                         rm -r "\$WORKSPACE/${ALLURE_RESULTS}"
-                        echo '=== Тут не должно быть папки allure-results ==='
+                        rm -r "\$WORKSPACE/allure-report"
+                        echo '=== Тут не должно быть папки allure-results / allure-report ==='
                         ls -ls "\$WORKSPACE"
                         mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
                         chmod -R 777 "$WORKSPACE/${ALLURE_RESULTS}"
@@ -104,14 +105,14 @@ pipeline {
                     mkdir -p "$WORKSPACE/allure-results"
                     cd "$WORKSPACE/allure-results"
                     echo ==содержимое волума jenkins_allur==
-                    docker run --rm -v jenkins_allure:/source alpine ls -ls
+                    docker run --rm -v jenkins_allure:/source alpine ls -ls /source
                     # никак не получалось смонтировать или скопировать результаты Allure в workspace (что то с правами)
                     # нашел такое решение: захватить stdout и разархивировать в нужное место - сработало
                     echo ==теперь копируем в workspace==
                     docker run --rm -v jenkins_allure:/source alpine tar -c -f - -C /source . | tar -x -f -
 
                     chmod -R 777 .
-                    ==финальное состояние workspace==
+                    echo ==финальное состояние workspace==
                     ls -la
                     '''
                 }
