@@ -117,9 +117,9 @@ pipeline {
 
                     # Создаём папку
                     mkdir -p "$WORKSPACE/allure-results"
-                    # Установим unzip, если нет
-                    if ! command -v unzip > /dev/null; then
-                        apt-get update && apt-get install -y unzip
+                    # Установим zip, если нет
+                    if ! command -v zip > /dev/null; then
+                        apt-get update && apt-get install -y zip
                     fi
 
                     # Архивируем и распаковываем через zip
