@@ -102,7 +102,7 @@ pipeline {
                     set -e
                     mkdir -p "$WORKSPACE/allure-results"
                     cd "$WORKSPACE/allure-results"
-                    # никак не получалось смонтировать или скопировать результаты Allure в workspace (что то с правами)
+                    # никак не получалось смонтировать или скопировать результаты Allure сразу в workspace (что то с правами)
                     # нашел такое решение: захватить stdout и разархивировать в нужное место - сработало
                     docker run --rm -v jenkins_allure:/source alpine tar -c -f - -C /source . | tar -x -f -
 
