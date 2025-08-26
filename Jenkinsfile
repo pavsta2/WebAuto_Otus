@@ -76,16 +76,10 @@ pipeline {
                         echo "BROWSER_VER: ${params.BROWSER_VER}"
                         echo "REMOTE_URL: ${params.REMOTE_URL}"
                         echo "APP_URL: ${params.APP_URL}"
-                        echo "WORKSPACE, куда монтируем рез-ты тестов: \$WORKSPACE"
-                        echo "WORKSPACE: $WORKSPACE"
-                        touch "$WORKSPACE/test_in_ws.txt" && echo "OK" || echo "FAIL"
-                        ls -la "$WORKSPACE"
 
                         rm -rf "\$WORKSPACE/${ALLURE_RESULTS}"/*
                         mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
                         chmod -R 777 "$WORKSPACE/${ALLURE_RESULTS}"
-                        touch "$WORKSPACE/${ALLURE_RESULTS}/test_in_allure.txt" && echo "OK" || echo "FAIL"
-                        ls -la "$WORKSPACE"/${ALLURE_RESULTS}
 
                         docker run --rm \\
                         -e BROWSER='${params.BROWSER}' \\
@@ -108,7 +102,8 @@ pipeline {
                     set -e
                     mkdir -p "$WORKSPACE/allure-results"
                     cd "$WORKSPACE/allure-results"
-
+                    # никак не получалось смонтировать или скопировать результаты Allure в workspace (что то с правами)
+                    # нашел такое решение: захватить stdout и разархивировать в нужное место - сработало
                     docker run --rm -v jenkins_allure:/source alpine tar -c -f - -C /source . | tar -x -f -
 
                     chmod -R 777 .
