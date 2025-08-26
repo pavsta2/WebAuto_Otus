@@ -105,33 +105,30 @@ pipeline {
             stage('Fetch Allure Results') {
                 steps {
                     sh '''
-                    # Проверка 1: существует ли том jenkins_allure?
-                    echo "Проверка: существует ли том jenkins_allure?"
-                    docker volume inspect jenkins_allure > /dev/null 2>&1
-                    if [ $? -ne 0 ]; then
-                        echo "Ошибка: том jenkins_allure не существует"
-                        exit 1
-                    fi
-                    echo "Том jenkins_allure существует"
-
-                    # Проверка 2: есть ли что-то в томе?
+                    set -e
+                    # Проверка 1: есть ли что-то в томе?
                     echo "Содержимое тома jenkins_allure:"
                     docker run --rm \
                     -v jenkins_allure:/check \
                     alpine ls -la /check
 
-                    echo "=== Копируем результаты в WORKSPACE ==="
+                    echo "=== Копируем результаты в WORKSPACE с помощью tar ==="
                     echo "WORKSPACE: $WORKSPACE"
 
-                    # Убедимся, что папка существует
+                    # Создаём папку
                     mkdir -p "$WORKSPACE/allure-results"
+                    cd "$WORKSPACE/allure-results"
 
-                    # Создаём временный контейнер для копирования
+                    # Архивируем содержимое тома jenkins_allure и распаковываем в текущую директорию
                     docker run --rm \
-                    -v jenkins_allure:"\$WORKSPACE/allure-results" \
-                    alpine
+                    -v jenkins_allure:/data \
+                    alpine \
+                    tar -c -f - -C /data .
 
-                    # Делаем доступными для Jenkins
+                    # Передаём stdout (архив) в tar для распаковки
+                    ''' | tar -x -f -
+
+                    # Делаем файлы доступными
                     chmod -R 777 "$WORKSPACE/allure-results"
 
                     echo "=== Содержимое WORKSPACE/allure-results ==="
