@@ -129,7 +129,7 @@ pipeline {
                     # Создаём временный контейнер для копирования
                     docker run --rm \
                     -v jenkins_allure:/source \
-                    -v "$WORKSPACE/allure-results":/target \
+                    -v "\$WORKSPACE/allure-results":/target \
                     alpine cp -r /source/. /target/
 
                     # Делаем доступными для Jenkins
