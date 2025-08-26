@@ -123,11 +123,8 @@ pipeline {
                     docker run --rm \
                     -v jenkins_allure:/data \
                     alpine \
-                    tar -c -f - -C /data .
-
-                    # Передаём stdout (архив) в tar для распаковки
-                    ''' | tar -x -f -
-
+                    tar -c -f - -C /data . | tar -x -f -
+                    '''
                     # Делаем файлы доступными
                     chmod -R 777 "$WORKSPACE/allure-results"
 
