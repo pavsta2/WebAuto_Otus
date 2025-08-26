@@ -96,10 +96,33 @@ pipeline {
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='/root/WebAuto_Otus/${ALLURE_RESULTS}' \\
                         --network selenoid3 \\
-                        -v "\$WORKSPACE/${ALLURE_RESULTS}:/${ALLURE_RESULTS}" \\
+                        -v "jenkins_allure:/${ALLURE_RESULTS}" \\
                         ${TEST_IMAGE}
                         """
                     }
+                }
+            }
+            stage('Fetch Allure Results') {
+                steps {
+                    sh '''
+                    echo "=== Копируем результаты в WORKSPACE ==="
+                    echo "WORKSPACE: $WORKSPACE"
+
+                    # Убедимся, что папка существует
+                    mkdir -p "$WORKSPACE/allure-results"
+
+                    # Создаём временный контейнер для копирования
+                    docker run --rm \
+                    -v jenkins_allure:/source \
+                    -v "$WORKSPACE/allure-results":/target \
+                    alpine cp -r /source/. /target/
+
+                    # Делаем доступными для Jenkins
+                    chmod -R 777 "$WORKSPACE/allure-results"
+
+                    echo "=== Содержимое WORKSPACE/allure-results ==="
+                    ls -la "$WORKSPACE/allure-results"
+                    '''
                 }
             }
             stage('Generate Allure Report') {
