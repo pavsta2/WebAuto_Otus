@@ -117,16 +117,22 @@ pipeline {
 
                     # Создаём папку
                     mkdir -p "$WORKSPACE/allure-results"
-                    cd "$WORKSPACE/allure-results"
+                    # Установим unzip, если нет
+                    if ! command -v unzip > /dev/null; then
+                        apt-get update && apt-get install -y unzip
+                    fi
 
-                    # Архивируем содержимое тома jenkins_allure и распаковываем в текущую директорию
+                    # Архивируем и распаковываем через zip
                     docker run --rm \
                     -v jenkins_allure:/data \
                     alpine \
-                    tar -c -f - -C /data . | tar -x -f -
-                    '''
-                    # Делаем файлы доступными
-                    chmod -R 777 "$WORKSPACE/allure-results"
+                    sh -c "cd /data && zip -r - ./*" > /tmp/allure-results.zip
+
+                    # Распаковываем
+                    unzip -o /tmp/allure-results.zip -d "$WORKSPACE/allure-results"
+
+                    # Чистим
+                    rm /tmp/allure-results.zip
 
                     echo "=== Содержимое WORKSPACE/allure-results ==="
                     ls -la "$WORKSPACE/allure-results"
