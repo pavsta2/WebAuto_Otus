@@ -128,7 +128,8 @@ pipeline {
 
                     # Создаём временный контейнер для копирования
                     docker run --rm \
-                    -v jenkins_allure:"\$WORKSPACE/allure-results"
+                    -v jenkins_allure:"\$WORKSPACE/allure-results" \
+                    alpine
 
                     # Делаем доступными для Jenkins
                     chmod -R 777 "$WORKSPACE/allure-results"
