@@ -18,6 +18,3 @@ pytest --browser "$BROWSER" \
 
 chmod -R 777 $ALLURE_RESULTS
 
-echo "=== Содержимое $ALLURE_RESULTS ==="
-ls -la $ALLURE_RESULTS
-

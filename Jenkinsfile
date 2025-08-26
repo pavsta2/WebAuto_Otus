@@ -106,8 +106,6 @@ pipeline {
                     docker run --rm -v jenkins_results:/data alpine tar -c -f - -C /data . | tar -x -f -
 
                     chmod -R 777 .
-                    echo ==финальное состояние workspace==
-                    ls -la
                     '''
                 }
             }
