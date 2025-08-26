@@ -78,12 +78,14 @@ pipeline {
                         echo "APP_URL: ${params.APP_URL}"
                         echo "WORKSPACE, куда монтируем рез-ты тестов: \$WORKSPACE"
                         echo "WORKSPACE: $WORKSPACE"
-                        touch "$WORKSPACE/test.txt" && echo "OK" || echo "FAIL"
+                        touch "$WORKSPACE/test_in_ws.txt" && echo "OK" || echo "FAIL"
                         ls -la "$WORKSPACE"
 
                         rm -rf "\$WORKSPACE/${ALLURE_RESULTS}"/*
                         mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
                         chmod -R 777 "$WORKSPACE/${ALLURE_RESULTS}"
+                        touch "$WORKSPACE/${ALLURE_RESULTS}/test_in_allure.txt" && echo "OK" || echo "FAIL"
+                        ls -la "$WORKSPACE"/${ALLURE_RESULTS}
 
                         docker run --rm \\
                         -e BROWSER='${params.BROWSER}' \\
@@ -93,7 +95,6 @@ pipeline {
                         -e APP_URL='${params.APP_URL}' \\
                         -e LOG_LEVEL='${params.LOG_LEVEL}' \\
                         -e ALLURE_RESULTS='/root/WebAuto_Otus/${ALLURE_RESULTS}' \\
-                        --group-add 1000 \\
                         --network selenoid3 \\
                         -v "\$WORKSPACE/${ALLURE_RESULTS}:/${ALLURE_RESULTS}" \\
                         ${TEST_IMAGE}

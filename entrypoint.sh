@@ -16,7 +16,6 @@ pytest tests/test_adm_login_page_elems.py --browser "$BROWSER" \
       --remote_url="$REMOTE_URL" \
       --alluredir=$ALLURE_RESULTS
 
-chgrp -R jenkins $ALLURE_RESULTS
 chmod -R 777 $ALLURE_RESULTS
 
 echo "=== Содержимое $ALLURE_RESULTS ==="
