@@ -75,11 +75,10 @@ pipeline {
                         echo "BROWSER: ${params.BROWSER}"
                         echo "BROWSER_VER: ${params.BROWSER_VER}"
                         echo "REMOTE_URL: ${params.REMOTE_URL}"
-                        echo "APP_URL: ${params.APP_URL}"
 
                         rm -r "\$WORKSPACE/${ALLURE_RESULTS}"
                         echo '=== Тут не должно быть папки allure-results ==='
-                        ls -ls "\$WORKSPACE
+                        ls -ls "\$WORKSPACE"
                         mkdir -p "\$WORKSPACE/${ALLURE_RESULTS}"
                         chmod -R 777 "$WORKSPACE/${ALLURE_RESULTS}"
 
