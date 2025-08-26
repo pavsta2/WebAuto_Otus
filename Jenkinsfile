@@ -117,7 +117,7 @@ pipeline {
 
                     # Создаём папку
                     mkdir -p "$WORKSPACE/allure-results"
-                    apk add --no-cache zip
+                    apt-get update && apt-get install -y zip
 
                     # Архивируем и распаковываем через zip
                     docker run --rm \
