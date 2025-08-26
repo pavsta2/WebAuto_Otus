@@ -106,33 +106,13 @@ pipeline {
                 steps {
                     sh '''
                     set -e
-                    # Проверка 1: есть ли что-то в томе?
-                    echo "Содержимое тома jenkins_allure:"
-                    docker run --rm \
-                    -v jenkins_allure:/check \
-                    alpine ls -la /check
-
-                    echo "=== Копируем результаты в WORKSPACE с помощью tar ==="
-                    echo "WORKSPACE: $WORKSPACE"
-
-                    # Создаём папку
                     mkdir -p "$WORKSPACE/allure-results"
-                    apt-get update && apt-get install -y zip
+                    cd "$WORKSPACE/allure-results"
 
-                    # Архивируем и распаковываем через zip
-                    docker run --rm \
-                    -v jenkins_allure:/data \
-                    alpine \
-                    sh -c "cd /data && zip -r - ./*" > /tmp/allure-results.zip
+                    docker run --rm -v jenkins_allure:/source alpine tar -c -f - -C /source . | tar -x -f -
 
-                    # Распаковываем
-                    unzip -o /tmp/allure-results.zip -d "$WORKSPACE/allure-results"
-
-                    # Чистим
-                    rm /tmp/allure-results.zip
-
-                    echo "=== Содержимое WORKSPACE/allure-results ==="
-                    ls -la "$WORKSPACE/allure-results"
+                    chmod -R 777 .
+                    ls -la
                     '''
                 }
             }
