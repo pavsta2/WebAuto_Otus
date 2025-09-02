@@ -7,10 +7,10 @@ RUN mkdir -p /root/WebAuto_Otus
 WORKDIR /root/WebAuto_Otus
 
 COPY . /root/WebAuto_Otus
+RUN mkdir -p /root/WebAuto_Otus/Logs
 
 RUN pip install --no-cache uv && \
     uv venv && \
-    . .venv/bin/activate && \
     uv pip install -r requirements.txt
 
 COPY entrypoint.sh /entrypoint.sh
